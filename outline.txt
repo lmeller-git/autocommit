@@ -1,0 +1,3 @@
+provide some script/ some tool that automatically sets up all config files (like commit-msg hooks) on clone/ when run (this should also install and build the msg generator)
+on commit -> msg hook gets run and potentiall y generates a new message, ehich overwrites the original message, (or is returned for the user to copy with git commit --amend)
+supply some --force-msg arg, to force messages
