@@ -1,0 +1,177 @@
+diff --git a/commit_processing/Cargo.toml b/commit_processing/Cargo.toml
+index 2b69b76..83f30b0 100644
+--- a/commit_processing/Cargo.toml
++++ b/commit_processing/Cargo.toml
+@@ -5,3 +5,5 @@ edition = "2021"
+ 
+ [dependencies]
+ clap = { version = "4.5.28", features = ["derive"] }
++pyo3 = { version = "0.23.4", features = ["extension-module"] }
++thiserror = "2.0.11"
+diff --git a/commit_processing/python_bindings/Cargo.toml b/commit_processing/python_bindings/Cargo.toml
+deleted file mode 100644
+index cfc6375..0000000
+--- a/commit_processing/python_bindings/Cargo.toml
++++ /dev/null
+@@ -1,7 +0,0 @@
+-[package]
+-name = "python_bindings"
+-version = "0.1.0"
+-edition = "2021"
+-
+-[dependencies]
+-pyo3 = "0.23.4"
+diff --git a/commit_processing/python_bindings/src/lib.rs b/commit_processing/python_bindings/src/lib.rs
+deleted file mode 100644
+index b93cf3f..0000000
+--- a/commit_processing/python_bindings/src/lib.rs
++++ /dev/null
+@@ -1,14 +0,0 @@
+-pub fn add(left: u64, right: u64) -> u64 {
+-    left + right
+-}
+-
+-#[cfg(test)]
+-mod tests {
+-    use super::*;
+-
+-    #[test]
+-    fn it_works() {
+-        let result = add(2, 2);
+-        assert_eq!(result, 4);
+-    }
+-}
+diff --git a/commit_processing/src/lib.rs b/commit_processing/src/lib.rs
+index b93cf3f..3af6d07 100644
+--- a/commit_processing/src/lib.rs
++++ b/commit_processing/src/lib.rs
+@@ -1,14 +1,33 @@
+-pub fn add(left: u64, right: u64) -> u64 {
+-    left + right
++use std::path::PathBuf;
++
++use pyo3::prelude::*;
++use thiserror::Error;
++mod parse;
++
++pub type Result<'a, T> = std::result::Result<T, ParseDiffError>;
++
++#[derive(Error, Debug)]
++pub enum ParseDiffError {
++    #[error("IO operation failed {0}")]
++    IOError(#[from] std::io::Error),
++    #[error("parsing of file {0} failed with")]
++    ParseError(#[from] parse::ParseError<'static>),
++}
++
++#[pyclass]
++#[derive(Default, Debug)]
++struct PyDiff {}
++
++#[pymodule]
++fn parse_diff(m: &Bound<'_, PyModule>) -> PyResult<()> {
++    m.add_function(wrap_pyfunction!(parse_diff_file, m)?)
++}
++#[pyfunction]
++fn parse_diff_file(diff: PathBuf) -> PyResult<Vec<PyDiff>> {
++    Ok(Vec::default())
+ }
+ 
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+-
+-    #[test]
+-    fn it_works() {
+-        let result = add(2, 2);
+-        assert_eq!(result, 4);
+-    }
+ }
+diff --git a/commit_processing/src/parse/diff.rs b/commit_processing/src/parse/diff.rs
+new file mode 100644
+index 0000000..c536f1b
+--- /dev/null
++++ b/commit_processing/src/parse/diff.rs
+@@ -0,0 +1,30 @@
++use std::path::Path;
++
++/// diff of a file
++#[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Clone)]
++pub struct Diff<'a> {
++    path: &'a Path,
++    code: Vec<Modified<'a>>,
++}
++
++/// a modified block
++#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
++pub struct Modified<'a> {
++    old: &'a str,
++    new: &'a str,
++}
++
++impl<'a> Diff<'a> {
++    pub fn new(p: &'a Path) -> Self {
++        Self {
++            path: p,
++            code: Vec::new(),
++        }
++    }
++}
++
++impl<'a> Modified<'a> {
++    fn new(old: &'a str, new: &'a str) -> Self {
++        Self { old, new }
++    }
++}
+diff --git a/commit_processing/src/parse/mod.rs b/commit_processing/src/parse/mod.rs
+new file mode 100644
+index 0000000..fc89a52
+--- /dev/null
++++ b/commit_processing/src/parse/mod.rs
+@@ -0,0 +1,20 @@
++pub mod diff;
++pub mod parse_diff;
++use diff::Diff;
++use thiserror::Error;
++
++pub type Result<'a, T> = std::result::Result<T, ParseError<'a>>;
++
++#[derive(Error, Debug)]
++pub enum ParseError<'a> {
++    #[error("cannot parse from {0}")]
++    BadStr(&'a str),
++}
++
++pub fn parse_diff<'a>(diff: &'a str) -> Result<Vec<Diff<'a>>> {
++    let mut diffs = Vec::new();
++    for d in diff.split('@') {
++        diffs.push(d.parse::<Diff>()?);
++    }
++    Ok(diffs)
++}
+diff --git a/commit_processing/src/parse/parse_diff.rs b/commit_processing/src/parse/parse_diff.rs
+new file mode 100644
+index 0000000..c396509
+--- /dev/null
++++ b/commit_processing/src/parse/parse_diff.rs
+@@ -0,0 +1,20 @@
++use std::str::FromStr;
++
++use super::{
++    diff::{Diff, Modified},
++    ParseError,
++};
++
++impl<'a> FromStr for Diff<'a> {
++    type Err = ParseError<'a>;
++    fn from_str(s: &str) -> Result<Self, Self::Err> {
++        todo!()
++    }
++}
++
++impl<'a> FromStr for Modified<'a> {
++    type Err = ParseError<'a>;
++    fn from_str(s: &str) -> Result<Self, Self::Err> {
++        todo!()
++    }
++}
