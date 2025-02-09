@@ -8,19 +8,22 @@ fi
 TARGET_REPO="$1"
 HOOKS_DIR="$TARGET_REPO/.git/hooks"
 HOOK_FILE="$HOOKS_DIR/commit-msg"
-AUTOCOMMIT_DIR="$HOME/autocommit"
-AUTOCOMMIT_DIR="$(dirname "$0")"
+AUTOCOMMIT_DIR=$(dirname "$(dirname "$0")")
 VENV_DIR="$AUTOCOMMIT_DIR/venv"
+
+echo "$TARGET_REPO", "$HOOKS_DIR", "$HOOK_FILE", "$AUTOCOMMIT_DIR", "$VENV_DIR" 
+# exit 0
 
 if [ ! -d "$TARGET_REPO/.git" ]; then
     echo "Error: '$TARGET_REPO' is not a valid Git repository."
     exit 1
 fi
 
-echo "Installing commit-msg hook in $TARGET_REPO..."
+echo "Installing commit-msg hook in $HOOKS_DIR"
 
+# exit 0
 # mkdir -p "$HOOKS_DIR"
-cp "$AUTOCOMMIT_DIR/hooks/commit-msg" "$HOOK_FILE"
+cp "$AUTOCOMMIT_DIR/scripts/commit-msg" "$HOOK_FILE"
 chmod +x "$HOOK_FILE"
 
 if [ ! -d "$VENV_DIR" ]; then
@@ -32,4 +35,4 @@ fi
 echo "Installing dependencies in virtual environment..."
 "$VENV_DIR/bin/pip" install -r "$AUTOCOMMIT_DIR/requirements.txt"
 
-echo "Installation complete. The commit-msg hook is now active for $TARGET_REPO."
+echo "Installation complete. The commit-msg hook is now active for $TARGET_REPO
