@@ -8,6 +8,7 @@ def parse_args() -> argparse.Namespace:
         prog="AutoCommit", description="parse and modify provided git diff"
     )
     parser.add_argument("diff_file", type=str, help="file which holds the git diff")
+    parser.add_argument("original message", type=str, help="original commit message")
     return parser.parse_args()
 
 
