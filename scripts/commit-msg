@@ -29,7 +29,7 @@ CURRENT_MSG=$(cat "$COMMIT_MSG_FILE")
 AUTOCOMMIT_DIR=$(dirname "$(dirname "$(command -v autocommit)")")
 SCRIPT_DIR="$AUTOCOMMIT_DIR/message_gen/src"
 
-echo "$COMMIT_MSG_FILE", "$SCRIPT_DIR", "$AUTOCOMMIT_DIR"
+# echo "$COMMIT_MSG_FILE", "$SCRIPT_DIR", "$AUTOCOMMIT_DIR"
 # check if force flag is present. TODO make this an actual flag, instead of a part of the commit message
 
 if echo "$CURRENT_MSG" | grep -q -- "--force_msg"; then
@@ -40,12 +40,12 @@ fi
 
 git diff --cached > /tmp/git_diff.txt
 
-NEW_MSG=$(autocommit --diff /tmp/git_diff.txt --old "$CURRENT_MSG")
+NEW_MSG="$(autocommit --diff /tmp/git_diff.txt --old "$CURRENT_MSG")"
 
 echo new commit message: "$NEW_MSG"
 
 if [[ -n "$NEW_MSG" ]]; then
-	echo "$NEW_MSG" > "$COMMIT_MSG_FILE"
+	echo -e "$NEW_MSG" > "$COMMIT_MSG_FILE"
 else
 	echo "Error: Failed to generate a commit message." >&2
 	exit 1
