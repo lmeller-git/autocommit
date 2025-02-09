@@ -22,7 +22,7 @@ fi
 
 if [[ "$1" == "--diff" && -n "$2" && "$3" == "--old" && -n "$4" ]]; then
     # echo gen: 2: "$2", 4: "$4", end
-    echo $("$VENV_DIR/bin/python" "$ "$PYTHON_SCRIPT" "$2" "$4")
+    echo $("$VENV_DIR/bin/python" "$PYTHON_SCRIPT" "$2" "$4")
     exit 0
 fi
 

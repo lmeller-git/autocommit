@@ -26,7 +26,7 @@
 
 COMMIT_MSG_FILE="$1"
 CURRENT_MSG=$(cat "$COMMIT_MSG_FILE")
-AUTOCOMMIT_DIR=$(dirname "$(dirname "$(command -v autocommit.sh)")")
+AUTOCOMMIT_DIR=$(dirname "$(dirname "$(command -v autocommit)")")
 SCRIPT_DIR="$AUTOCOMMIT_DIR/message_gen/src"
 
 echo "$COMMIT_MSG_FILE", "$SCRIPT_DIR", "$AUTOCOMMIT_DIR"
@@ -40,7 +40,7 @@ fi
 
 git diff --cached > /tmp/git_diff.txt
 
-NEW_MSG=$(autocommit.sh --diff /tmp/git_diff.txt --old "$CURRENT_MSG")
+NEW_MSG=$(autocommit --diff /tmp/git_diff.txt --old "$CURRENT_MSG")
 
 echo new commit message: "$NEW_MSG"
 
