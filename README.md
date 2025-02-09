@@ -1,10 +1,10 @@
 # AutoCommit
 
 
-Automatically generate new commit messages on push, enforcing a consistent commit message style.
+Automatically generate new commit messages at commit time, enforcing a consistent commit message style.
 
 
-## Instyallation
+## Installation
 
 
 Clone this repo  
@@ -17,7 +17,7 @@ navigate into the repo and get the following path:
 add the appl directory to your PATH:  
 ```$ export PATH="$PATH:<path-to-appl>```  
 
-You will need to login to huggingfacehub, in order to use the huggingfacehub api:  
+You will need to login to huggingfacehub in order to use the huggingfacehub api:  
 https://huggingface.co/docs/huggingface_hub/v0.28.1/quick-start
 
 
