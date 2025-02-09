@@ -8,15 +8,18 @@ def parse_args() -> argparse.Namespace:
         prog="AutoCommit", description="parse and modify provided git diff"
     )
     parser.add_argument("diff_file", type=str, help="file which holds the git diff")
-    parser.add_argument("original message", type=str, help="original commit message")
+    parser.add_argument("original_message", type=str, help="original commit message")
+    parser.add_argument("--verbosity", "-v", type=int, default=0, help="verbosity")
     return parser.parse_args()
 
 
 def main() -> None:
-    path = parse_args()
-    diffs = parse_diff(path.diff_file)
-    msg = gen_msg(diffs, "fixed stuff")
-    print(f"generated message:\n{msg}")
+    args = parse_args()
+    diffs = parse_diff(args.diff_file, args.verbosity)
+    msg = gen_msg(diffs, args.original_message, args.verbosity)
+    if args.verbosity > 0:
+        print("generated message:")
+    print(f"{msg}")
 
 if __name__ == "__main__":
     main()

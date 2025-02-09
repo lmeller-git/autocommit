@@ -42,7 +42,7 @@ Commit message: {[docs] expanded usage instructions in docs.md}"
 #       model: try chain of thought like process: model1 summarizes the diff into key changes, model2 takes this summary to generate commit msg, ... + implement this with langchain to reduce api calls
 #       model: tune hyperparameters
 
-def summarize(diffs: list[Diff], original: str) -> str:
+def summarize(diffs: list[Diff], original: str, v: int) -> str:
 	messages = [
 		{
 			"role": "system",
@@ -53,15 +53,17 @@ def summarize(diffs: list[Diff], original: str) -> str:
 			"content": f"original msg: {original}\ndiff:\n" + "\n".join([str(diff) for diff in diffs])
 		}
 	]
-	print("input: ", f"original msg: {original}\ndiff:\n" + "\n".join([str(diff) for diff in diffs]))
+	if v > 1:
+		print("input: ", f"original msg: {original}\ndiff:\n" + "\n".join([str(diff) for diff in diffs]))
 	stream = client.chat.completions.create(
 		messages = messages,
 		max_tokens = 200,
 		temperature = 0.2,
 		stream = True
 	)
-	msg = "".join([chunk.choices[0].delta.content for chunk in stream])	
-	print("out: ", msg)
+	msg = "".join([chunk.choices[0].delta.content for chunk in stream])
+	if v > 1:
+		print("out: ", msg)
 	ismatch = re.search(r'\{(\[.*?\].*?)\}', msg)
 	if ismatch:
 			msg = ismatch.group(1)
@@ -114,8 +116,8 @@ def summarize_chain(diffs: list[Diff], original: str) -> str:
 		msg = msg.strip()	
 	return msg
 
-def gen_msg(diffs: list[Diff], original: str) -> str:
-	summ = summarize(diffs, original)
+def gen_msg(diffs: list[Diff], original: str, v: int) -> str:
+	summ = summarize(diffs, original, v)
 	msg = summ + " (generated)" + "\noriginal: " + original
 	return msg
 	

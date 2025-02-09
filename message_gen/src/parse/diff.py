@@ -33,7 +33,7 @@ class Diff:
         return r
 
 
-def parse_diff(file: str) -> list[Diff]:
+def parse_diff(file: str, v: int) -> list[Diff]:
     # TODO read into buffer to allow handling of larger files
     diffs = []
     with open(file, "r") as f:
