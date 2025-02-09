@@ -18,7 +18,7 @@ add the appl directory to your PATH:
 ```$ export PATH="$PATH:<path-to-appl>```  
 
 You will need to login to huggingfacehub, in order to use the huggingfacehub api:  
-https://huggingface.co/  
+https://huggingface.co/docs/huggingface_hub/v0.28.1/quick-start
 
 
 ## Usage
