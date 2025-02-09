@@ -14,10 +14,10 @@ class Diff:
     full: str
 
     def __init__(self, data: str):
-        print("data: \n", data)
+        # print("data: \n", data)
         data = self._parse_path(data)
-        print("data2: \n", data)
-        print("p: \n", self.path)
+        # print("data2: \n", data)
+        # print("p: \n", self.path)
         self.full = data
         pass
 
