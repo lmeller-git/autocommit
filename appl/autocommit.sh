@@ -4,7 +4,7 @@ BASE_DIR=$(dirname "$(dirname "${BASH_SOURCE[0]}")")
 INSTALL_SCRIPT="$BASE_DIR/scripts/init.sh"
 PYTHON_SCRIPT="$BASE_DIR/message_gen/src/main.py"
 
-echo "$BASE_DIR"
+# echo "$BASE_DIR"
 
 if [[ $# -eq 1 && -d "$1" ]]; then
     "$INSTALL_SCRIPT" "$1"
@@ -19,10 +19,10 @@ if [ ! -d "$VENV_DIR" ]; then
     exit 1
 fi
 
-PYTHON="$VENV_DIR/bin/python"b
 
 if [[ "$1" == "--diff" && -n "$2" && "$3" == "--old" && -n "$4" ]]; then
-    python "$PYTHON_SCRIPT" "$2" "$4"
+    # echo gen: 2: "$2", 4: "$4", end
+    echo $("$VENV_DIR/bin/python" "$ "$PYTHON_SCRIPT" "$2" "$4")
     exit 0
 fi
 

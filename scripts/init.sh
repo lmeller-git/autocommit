@@ -35,4 +35,4 @@ fi
 echo "Installing dependencies in virtual environment..."
 "$VENV_DIR/bin/pip" install -r "$AUTOCOMMIT_DIR/requirements.txt"
 
-echo "Installation complete. The commit-msg hook is now active for $TARGET_REPO
+echo "Installation complete. The commit-msg hook is now active for $TARGET_REPO"

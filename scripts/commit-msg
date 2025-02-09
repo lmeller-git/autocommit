@@ -26,7 +26,7 @@
 
 COMMIT_MSG_FILE="$1"
 CURRENT_MSG=$(cat "$COMMIT_MSG_FILE")
-AUTOCOMMIT_DIR=&(dirname "$(dirname "$(command -v autocommit.sh)")")
+AUTOCOMMIT_DIR=$(dirname "$(dirname "$(command -v autocommit.sh)")")
 SCRIPT_DIR="$AUTOCOMMIT_DIR/message_gen/src"
 
 echo "$COMMIT_MSG_FILE", "$SCRIPT_DIR", "$AUTOCOMMIT_DIR"
