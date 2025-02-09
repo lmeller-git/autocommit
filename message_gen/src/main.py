@@ -14,8 +14,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     path = parse_args()
     diffs = parse_diff(path.diff_file)
-    gen_msg(diffs)
-
+    msg = gen_msg(diffs, "fixed stuff")
+    print(f"generated message:\n{msg}")
 
 if __name__ == "__main__":
     main()
