@@ -11,8 +11,6 @@ HOOK_FILE="$HOOKS_DIR/commit-msg"
 AUTOCOMMIT_DIR=$(dirname "$(dirname "$0")")
 VENV_DIR="$AUTOCOMMIT_DIR/venv"
 
-# echo "$TARGET_REPO", "$HOOKS_DIR", "$HOOK_FILE", "$AUTOCOMMIT_DIR", "$VENV_DIR" 
-# exit 0
 echo "Initializing $TARGET_REPO"
 
 if [ ! -d "$TARGET_REPO/.git" ]; then
@@ -22,8 +20,6 @@ fi
 
 echo "Installing commit-msg hook in $HOOKS_DIR"
 
-# exit 0
-# mkdir -p "$HOOKS_DIR"
 cp "$AUTOCOMMIT_DIR/scripts/commit-msg" "$HOOK_FILE"
 chmod +x "$HOOK_FILE"
 

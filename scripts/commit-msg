@@ -32,8 +32,8 @@ SCRIPT_DIR="$AUTOCOMMIT_DIR/message_gen/src"
 # echo "$COMMIT_MSG_FILE", "$SCRIPT_DIR", "$AUTOCOMMIT_DIR"
 # check if force flag is present. TODO make this an actual flag, instead of a part of the commit message
 
-if echo "$CURRENT_MSG" | grep -q -- "--force_msg"; then
-    CURRENT_MSG=$(echo "$CURRENT_MSG" | sed 's/--force_msg//g')
+if echo "$CURRENT_MSG" | grep -q -- "--force-msg"; then
+    CURRENT_MSG=$(echo "$CURRENT_MSG" | sed 's/--force-msg//g')
     echo "$CURRENT_MSG" > "$COMMIT_MSG_FILE"
     exit 0
 fi

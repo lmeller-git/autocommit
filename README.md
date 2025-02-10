@@ -25,11 +25,16 @@ https://huggingface.co/docs/huggingface_hub/v0.28.1/quick-start
 
 
 If you want to use autocommit in your repository:  
-```$ autocommit <path-to-repo>```  
+```$ autocommit init <path-to-repo>```  
 
 Now any commits made will be rewritten.  
-If you want to force your commit message, include --force_msg IN you commit message  
-```$ git commit -m "<message> --force_msg"```  
+If you want to force your commit message,
+
+commit with the --no-verify flag, to skipp all commit hooks
+```$ git commit -m "<message>" --no-verify```
+
+or include --force-msg IN you commit message  
+```$ git commit -m "<message> --force-msg"```  
 
 If you want to disable autocommit in your repository:  
-```$ autocommit --uninstall <path-to-repo>```
+```$ autocommit uninstall <path-to-repo>```

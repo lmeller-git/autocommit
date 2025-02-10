@@ -4,12 +4,11 @@ BASE_DIR=$(dirname "$(dirname "${BASH_SOURCE[0]}")")
 SCRIPT_DIR="$BASE_DIR/scripts"
 PYTHON_SCRIPT="$BASE_DIR/message_gen/src/main.py"
 
-# echo "$BASE_DIR"
 usage() {
     echo "Usage:"
     echo "  autocommit --help      # Show this help message"
-    echo "  autocommit <repo_dir>  # Install hooks in the specified repo"
-    echo "  autocommit --uninstall <repo_dir> # uninstall hooks from repo"
+    echo "  autocommit init <repo_dir>  # Install hooks in the specified repo"
+    echo "  autocommit uninstall <repo_dir> # uninstall hooks from repo"
     echo "  autocommit --diff <diff_file> --old <old_message>  # Generate a commit message"
     echo
 }
@@ -22,13 +21,12 @@ for arg in "$@"; do
     fi
 done
 
-if [[ $# -eq 1 && -d "$1" ]]; then
-    "$SCRIPT_DIR/init.sh" "$1"
+if [[ "$1" == "init" && -d "$2" ]]; then
+    "$SCRIPT_DIR/init.sh" "$2"
     exit 0
 fi
 
-if [[ "$1" == "--uninstall" && -d "$2" ]]; then
-    # echo gen: 2: "$2", 4: "$4", end
+if [[ "$1" == "uninstall" && -d "$2" ]]; then
     "$SCRIPT_DIR/deinit.sh" "$2"
     exit 0
 fi
@@ -36,13 +34,12 @@ fi
 VENV_DIR="$BASE_DIR/venv"
 
 if [ ! -d "$VENV_DIR" ]; then
-    echo "Error: Virtual environment not found in autocommit directory. Please run install.sh again." >&2
+    echo "Error: Virtual environment not found in autocommit directory. Please run init again." >&2
     exit 1
 fi
 
 
 if [[ "$1" == "--diff" && -n "$2" && "$3" == "--old" && -n "$4" ]]; then
-    # echo gen: 2: "$2", 4: "$4", end
     echo "$("$VENV_DIR/bin/python" "$PYTHON_SCRIPT" "$2" "$4")"
     exit 0
 fi
