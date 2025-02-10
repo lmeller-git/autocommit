@@ -30,7 +30,7 @@ If you want to use autocommit in your repository:
 Now any commits made will be rewritten.  
 If you want to force your commit message,
 
-commit with the --no-verify flag, to skipp all commit hooks
+commit with the --no-verify flag, to skip all commit hooks  
 ```$ git commit -m "<message>" --no-verify```
 
 or include --force-msg IN you commit message  
