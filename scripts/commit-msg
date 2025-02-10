@@ -42,6 +42,11 @@ git diff --cached > /tmp/git_diff.txt
 
 NEW_MSG="$(autocommit --diff /tmp/git_diff.txt --old "$CURRENT_MSG")"
 
+if [[ $? -ne 0 ]]; then
+    # echo "Error: Message generation failed." >&2
+    exit 1
+fi
+
 echo new commit message: "$NEW_MSG"
 
 if [[ -n "$NEW_MSG" ]]; then

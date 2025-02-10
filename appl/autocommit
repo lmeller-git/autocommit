@@ -40,7 +40,12 @@ fi
 
 
 if [[ "$1" == "--diff" && -n "$2" && "$3" == "--old" && -n "$4" ]]; then
-    echo "$("$VENV_DIR/bin/python" "$PYTHON_SCRIPT" "$2" "$4")"
+    OUTPUT="$("$VENV_DIR/bin/python" "$PYTHON_SCRIPT" "$2" "$4")"
+    if [[ $? -ne 0 ]]; then
+        echo "Error:  Message Generation failed." >&2
+        exit 1
+    fi
+    echo "$OUTPUT"
     exit 0
 fi
 
