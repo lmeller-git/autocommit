@@ -12,6 +12,7 @@ Clone this repo
 ```$ git clone https://github.com/lmeller-git/autocommit```  
 
 Navigate into the repo and add the following path to your PATH:
+
 ```$ cd autocommit/appl && echo 'export PATH="$PATH:'"$(pwd)"'"'```  
 
 You will need to login to huggingfacehub in order to use the huggingfacehub api:  
