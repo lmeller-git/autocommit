@@ -13,7 +13,7 @@ Clone this repo
 
 Navigate into the repo and add the following path to your PATH:
 
-```$ cd autocommit/appl && echo 'export PATH="$PATH:'"$(pwd)"'"' >> ~/.bashrc```  
+```$ cd autocommit/appl && echo 'export PATH="$PATH:'"$(pwd)"'"' >> ~/.bashrc && source ~/.bashrc```  
 
 You will need to login to huggingfacehub in order to use the huggingfacehub api:  
 https://huggingface.co/docs/huggingface_hub/v0.28.1/quick-start
